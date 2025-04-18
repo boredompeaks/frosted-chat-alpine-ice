@@ -1,8 +1,11 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlassContainer, GlassCard, GlassBadge, GlassInput, GlassButton } from "@/components/ui/glassmorphism";
 import { Bell, LogOut, Plus, Search, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ChatPreview {
   id: string;
@@ -18,9 +21,11 @@ const ChatList = () => {
   const [chats, setChats] = useState<ChatPreview[]>([]);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { signOut, user, profile } = useAuth();
 
   useEffect(() => {
-    // Mock data for chat list
+    // Fetch chats from Supabase for a real implementation
+    // This is just a placeholder for now
     const mockChats: ChatPreview[] = [
       {
         id: "1",
@@ -48,19 +53,43 @@ const ChatList = () => {
     ];
     
     setChats(mockChats);
-  }, []);
+    
+    // In a real implementation, you would fetch chats from Supabase
+    // For example:
+    /*
+    const fetchChats = async () => {
+      try {
+        const { data: participations, error } = await supabase
+          .from('chat_participants')
+          .select('chat_id')
+          .eq('user_id', user?.id);
+          
+        if (error) throw error;
+        
+        // For each chat, get the other participant and last message
+        // This would require more complex queries in a real app
+      } catch (error) {
+        console.error('Error fetching chats:', error);
+      }
+    };
+    
+    if (user) {
+      fetchChats();
+    }
+    */
+  }, [user]);
 
   const filteredChats = chats.filter(chat => 
     chat.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleLogout = () => {
-    localStorage.removeItem("briar-user");
-    toast({
-      title: "Logged out",
-      description: "You have successfully logged out",
-    });
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const formatTime = (date: Date) => {

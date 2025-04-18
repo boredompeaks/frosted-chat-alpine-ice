@@ -3,16 +3,25 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlassContainer, GlassButton } from "@/components/ui/glassmorphism";
 import { Lock, MessageSquare, Shield } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const navigate = useNavigate();
-  const isAuthenticated = !!localStorage.getItem("briar-user");
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!loading && user) {
       navigate("/chats");
     }
-  }, [isAuthenticated, navigate]);
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">

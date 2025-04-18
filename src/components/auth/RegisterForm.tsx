@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlassContainer, GlassInput, GlassButton } from "@/components/ui/glassmorphism";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
@@ -12,6 +13,7 @@ const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,17 +38,18 @@ const RegisterForm = () => {
     
     setIsLoading(true);
     
-    // This is where you would normally connect to a backend API
-    // For now, we'll simulate registration
-    setTimeout(() => {
-      localStorage.setItem("briar-user", JSON.stringify({ username, email }));
-      setIsLoading(false);
+    try {
+      await signUp(email, password, username);
       toast({
         title: "Success",
-        description: "Your account has been created",
+        description: "Your account has been created. Please check your email for confirmation.",
       });
-      navigate("/chats");
-    }, 1500);
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

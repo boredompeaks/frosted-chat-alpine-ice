@@ -3,22 +3,24 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlassContainer, GlassInput, GlassButton } from "@/components/ui/glassmorphism";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface LoginFormProps {
   onSuccess?: () => void;
 }
 
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!username.trim() || !password.trim()) {
+    if (!email.trim() || !password.trim()) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
@@ -29,18 +31,15 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
     
     setIsLoading(true);
     
-    // This is where you would normally connect to a backend API
-    // For now, we'll simulate a login
-    setTimeout(() => {
-      localStorage.setItem("briar-user", JSON.stringify({ username }));
-      setIsLoading(false);
-      toast({
-        title: "Success",
-        description: "You have successfully logged in",
-      });
+    try {
+      await signIn(email, password);
       if (onSuccess) onSuccess();
       navigate("/chats");
-    }, 1500);
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,15 +48,15 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="username" className="block text-sm font-medium text-white/80 mb-1">
-            Username
+          <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-1">
+            Email
           </label>
           <GlassInput
-            id="username"
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>

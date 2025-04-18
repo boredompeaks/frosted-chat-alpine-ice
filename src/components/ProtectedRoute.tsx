@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -10,20 +11,27 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { toast } = useToast();
   const location = useLocation();
-  
-  const isAuthenticated = !!localStorage.getItem("briar-user");
+  const { user, loading } = useAuth();
   
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!loading && !user) {
       toast({
         title: "Authentication required",
         description: "Please log in to access this page",
         variant: "destructive",
       });
     }
-  }, [isAuthenticated, toast]);
+  }, [user, loading, toast]);
 
-  if (!isAuthenticated) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

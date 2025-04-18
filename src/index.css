@@ -35,19 +35,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -96,6 +89,89 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-ice-dark text-white min-h-screen;
+    background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=1740');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-lg;
+  }
+  
+  .glass-dark {
+    @apply bg-black/30 backdrop-blur-md border border-white/10 rounded-xl shadow-lg;
+  }
+  
+  .glass-card {
+    @apply glass p-4 transition-all duration-300 hover:bg-white/20;
+  }
+  
+  .glass-button {
+    @apply glass px-4 py-2 transition-all duration-300 hover:bg-white/30 active:scale-95;
+  }
+  
+  .message-bubble {
+    @apply p-3 rounded-xl max-w-[80%] mb-2;
+  }
+  
+  .message-sent {
+    @apply message-bubble glass-dark ml-auto;
+  }
+  
+  .message-received {
+    @apply message-bubble glass mr-auto;
+  }
+  
+  .typing-indicator {
+    @apply flex gap-1 items-center p-2;
+  }
+  
+  .typing-dot {
+    @apply w-2 h-2 rounded-full bg-ice-accent;
+    animation: typing-animation 1.4s infinite ease-in-out;
+  }
+  
+  .typing-dot:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  .disappearing-message {
+    @apply relative overflow-hidden;
+  }
+  
+  .disappearing-message::after {
+    content: '';
+    @apply absolute bottom-0 left-0 h-0.5 bg-ice-accent;
+    animation: disappear-timer linear forwards;
+  }
+}
+
+@keyframes typing-animation {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes disappear-timer {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
   }
 }

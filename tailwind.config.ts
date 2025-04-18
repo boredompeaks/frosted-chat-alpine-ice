@@ -52,6 +52,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				ice: {
+					DEFAULT: '#D3E4FD',
+					dark: '#1A1F2C',
+					mid: '#8E9196',
+					light: '#F1F0FB',
+					accent: '#33C3F0',
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

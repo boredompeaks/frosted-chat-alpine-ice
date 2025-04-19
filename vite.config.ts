@@ -6,9 +6,9 @@ import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "localhost",
-    port: 8080, // Updated to use port 8080 as requested
-    open: true, // Opens the browser automatically
+    host: true, // Allow all hosts, including ngrok
+    port: 8080,
+    open: true,
   },
   plugins: [
     react(),
@@ -21,6 +21,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    exclude: ['@radix-ui/react-icons'], // Updated for the new icon library
+    exclude: ['@radix-ui/react-icons'], 
   }
 }));

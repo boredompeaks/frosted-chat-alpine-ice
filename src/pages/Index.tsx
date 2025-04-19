@@ -1,8 +1,7 @@
-
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlassContainer, GlassButton } from "@/components/ui/glassmorphism";
-import { LockClosedIcon, ChatBubbleIcon, ShieldCheckIcon } from "@radix-ui/react-icons";
+import { LockClosedIcon, ChatBubbleIcon, ShieldIcon } from "@radix-ui/react-icons";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
@@ -47,7 +46,7 @@ const Index = () => {
             </div>
             
             <div className="flex flex-col items-center p-4 glass">
-              <ShieldCheckIcon className="text-ice-accent h-6 w-6 mb-2" />
+              <ShieldIcon className="text-ice-accent h-6 w-6 mb-2" />
               <h3 className="text-white font-medium mb-1">Secure</h3>
               <p className="text-white/70 text-sm">One-time view media</p>
             </div>

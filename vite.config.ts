@@ -7,7 +7,7 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "localhost",
-    port: 5173, // Default Vite port
+    port: 8080, // Updated to use port 8080 as requested
     open: true, // Opens the browser automatically
   },
   plugins: [
@@ -21,6 +21,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    exclude: ['@radix-ui/react-icons'], // Optimize build for the new icon library
+    exclude: ['@radix-ui/react-icons'], // Updated for the new icon library
   }
 }));

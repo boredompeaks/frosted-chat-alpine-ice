@@ -1,7 +1,9 @@
+
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlassContainer, GlassButton } from "@/components/ui/glassmorphism";
-import { LockClosedIcon, ChatBubbleIcon, ShieldCheck } from "@radix-ui/react-icons";
+import { LockClosedIcon, ChatBubbleIcon } from "@radix-ui/react-icons";
+import { ShieldCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
